@@ -1,4 +1,4 @@
-game.js:
+/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjgha/sdjg;skgjdpwsdgjqeijfqxeifqcpw9ivpcmghxpwdxhgpwghmeuwghmxqpifhqphhe9ghwpeurhgfwidjghwpdghewiprugew[fghwpdifghwpiughweiufghwdiuhgdsjghs;fdgha;dsghasdjghagame.js:
     let once = 1;
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -318,6 +318,7 @@ enemy.js:
        ctx.fillStyle = 'red';
        enemies.forEach(enemy => {
            ctx.fillRect(enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height);
+Hey boy!
 
            // Draw enemy health bar
            drawHealthBar(enemy.x, enemy.y - enemy.height / 2 - 10, enemy.health, ENEMY_HEALTH);
@@ -326,3 +327,7 @@ enemy.js:
 
 hi jayden, this is ilya
 
+
+
+
+Hey Jayden
