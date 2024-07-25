@@ -318,11 +318,14 @@ enemy.js:
        ctx.fillStyle = 'red';
        enemies.forEach(enemy => {
            ctx.fillRect(enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height);
+Hey boy!
 
            // Draw enemy health bar
            drawHealthBar(enemy.x, enemy.y - enemy.height / 2 - 10, enemy.health, ENEMY_HEALTH);
        });
      }
+
+hi jayden, this is ilya
 
 
 
