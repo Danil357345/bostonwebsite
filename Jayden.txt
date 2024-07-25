@@ -1,0 +1,325 @@
+game.js:
+    let once = 1;
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const maze = [
+        '##########################',
+        '#                        #',
+        '# # # ## ###### ## # ### #',
+        '# # #  #      # #  # # # #',
+        '# # #### ###### # ## # # #',
+        '#      #        #  #     #',
+        '# ## ############# ##### #',
+        '# #         #        #   #',
+        '# # ####### # #### # # ###',
+        '# #             #  # #   #',
+        '# ## ### ## ##### ## ### #',
+        '#      #    #     #      #',
+        '##########################'
+    ];
+
+    const TILE_SIZE = 40;
+    const PLAYER_SIZE = 30;
+    const BULLET_SIZE = 10;
+    const ENEMY_SIZE = 30;
+    const ENEMY_SPEED = 5; // Increased speed
+    const ENEMY_HEALTH = 3;
+    const NUM_ENEMIES = 10; // Number of enemies to spawn
+    const ENEMY_SHOOT_INTERVAL = 1000; // Time between enemy shots (in milliseconds)
+
+    const player = {
+        x: 1 * TILE_SIZE + TILE_SIZE / 2,
+        y: 1 * TILE_SIZE + TILE_SIZE / 2,
+        width: PLAYER_SIZE,
+        height: PLAYER_SIZE,
+        speed: 2.5, // Increased speed
+        dx: 0,
+        dy: 0,
+        health: 10 // Player health
+    };
+
+    const bullets = [];
+    const bulletSpeed = 10;
+    const enemies = [];
+    const wallHitboxes = [];
+
+    function checkPlayerHealth() {
+      if (player.health <= 0 && once === 1) {
+        // Clear the area around the player
+        ctx.clearRect(player.x - player.width / 2 - 1, player.y - player.height / 2 - 1, player.width + 2, player.height + 2);
+        // Set `once` to 0 to prevent repeated clearing
+        once = 0;
+      }
+    }
+
+    function createWallHitboxes() {
+        // Define your wall hitbox creation logic here
+    }
+
+    function createEnemies(numEnemies) {
+        // Define your enemy creation logic here
+    }
+
+    function shootBullet() {
+        // Define your bullet shooting logic here
+    }
+
+    function collidesWithWall(x, y, width, height) {
+        // Define your wall collision detection logic here
+        return false; // Placeholder
+    }
+
+    function collides(obj1, obj2) {
+        // Define your collision detection logic here
+        return false; // Placeholder
+    }
+
+    function shootEnemyBullet(enemy) {
+        // Define your enemy bullet shooting logic here
+    }
+
+    function drawHealthBar(x, y, health, maxHealth) {
+        const barWidth = 30;
+        const barHeight = 5;
+        ctx.fillStyle = 'black';
+        ctx.fillRect(x - barWidth / 2, y, barWidth, barHeight);
+        ctx.fillStyle = 'green';
+        ctx.fillRect(x - barWidth / 2, y, (health / maxHealth) * barWidth, barHeight);
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+    });
+
+    canvas.addEventListener('mousedown', (e) => {
+        if (e.button === 0) { // Left click
+            shootBullet();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'w') player.dy = -player.speed;
+        if (e.key === 's') player.dy = player.speed;
+        if (e.key === 'a') player.dx = -player.speed;
+        if (e.key === 'd') player.dx = player.speed;
+    });
+
+    document.addEventListener('keyup', (e) => {
+        if (e.key === 'w' || e.key === 's') player.dy = 0;
+        if (e.key === 'a' || e.key === 'd') player.dx = 0;
+    });
+
+    function gameLoop() {
+        update();
+        draw();
+        checkPlayerHealth();
+        requestAnimationFrame(gameLoop);
+    }
+
+    function update() {
+        // Move player
+        player.x += player.dx;
+        player.y += player.dy;
+
+        // Collision detection with walls
+        if (collidesWithWall(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height)) {
+            player.x -= player.dx;
+            player.y -= player.dy;
+        }
+
+        // Move bullets
+        bullets.forEach(bullet => {
+            bullet.x += bullet.dx;
+            bullet.y += bullet.dy;
+
+            // Check bullet collisions with walls
+            if (collidesWithWall(bullet.x - BULLET_SIZE / 2, bullet.y - BULLET_SIZE / 2, BULLET_SIZE, BULLET_SIZE)) {
+                bullets.splice(bullets.indexOf(bullet), 1);
+            }
+        });
+
+        // Check bullet collisions
+        bullets.forEach((bullet, index) => {
+            if (bullet.source === 'player') {
+                // Player bullets
+                enemies.forEach((enemy, enemyIndex) => {
+                    if (collides(bullet, enemy)) {
+                        enemy.health -= 1;
+                        bullets.splice(index, 1);
+                        if (enemy.health <= 0) {
+                            enemies.splice(enemyIndex, 1);
+                        }
+                    }
+                });
+            } else if (bullet.source === 'enemy') {
+                // Enemy bullets
+                if (collides(bullet, player)) {
+                    player.health -= 1;
+                    bullets.splice(index, 1);
+                    if (player.health <= 0) {
+                        // Handle player death here (e.g., restart the game, end the game, etc.)
+                    }
+                }
+            }
+        });
+
+        // Move enemies with random movement
+        enemies.forEach(enemy => {
+            enemy.x += enemy.dx;
+            enemy.y += enemy.dy;
+
+            // Change direction periodically
+            enemy.directionChangeTimer -= 16.67; // Approximate time since last frame
+            if (enemy.directionChangeTimer <= 0) {
+                enemy.dx = (Math.random() - 0.5) * ENEMY_SPEED;
+                enemy.dy = (Math.random() - 0.5) * ENEMY_SPEED;
+                enemy.directionChangeTimer = Math.random() * 1000;
+            }
+
+            // Check enemy collisions with walls
+            if (collidesWithWall(enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height)) {
+                enemy.dx = -enemy.dx;
+                enemy.dy = -enemy.dy;
+            }
+
+            // Enemy shooting
+            const now = Date.now();
+            if (now - enemy.lastShotTime > ENEMY_SHOOT_INTERVAL) {
+                shootEnemyBullet(enemy);
+                enemy.lastShotTime = now;
+            }
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw maze
+        for (let y = 0; y < maze.length; y++) {
+            for (let x = 0; x < maze[y].length; x++) {
+                if (maze[y][x] === '#') {
+                    ctx.fillStyle = '#333';
+                    ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE); // Full tile size walls
+                }
+            }
+        }
+
+        // Draw player
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
+
+        // Draw player health bar
+        drawHealthBar(player.x, player.y - player.height / 2 - 10, player.health, 10);
+
+        // Draw bullets
+        bullets.forEach(bullet => {
+            ctx.fillStyle = bullet.source === 'player' ? 'red' : 'orange'; // Player bullets are red, enemy bullets are orange
+            ctx.fillRect(bullet.x - BULLET_SIZE / 2, bullet.y - BULLET_SIZE / 2, BULLET_SIZE, BULLET_SIZE);
+        });
+
+        // Draw enemies
+        ctx.fillStyle = 'red';
+        enemies.forEach(enemy => {
+            ctx.fillRect(enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height);
+
+            // Draw enemy health bar
+            drawHealthBar(enemy.x, enemy.y - enemy.height / 2 - 10, enemy.health, ENEMY_HEALTH);
+        });
+    }
+
+    createWallHitboxes();
+    createEnemies(NUM_ENEMIES);
+    gameLoop();
+
+
+player.js:
+
+function updatePlayer() {
+  
+  player.x += player.dx;
+  player.y += player.dy;
+
+  // Collision detection with walls
+  if (collidesWithWall(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height)) {
+      player.x -= player.dx;
+      player.y -= player.dy;
+  }
+
+function drawPlayer() {
+  ctx.fillStyle = 'blue'};
+
+  ctx.fillRect(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
+
+  // Draw player health bar
+  drawHealthBar(player.x, player.y - player.height / 2 - 10, player.health, 10);
+};
+
+//       drawHealthBar(enemy.x, enemy.y - enemy.height / 2 - 10, enemy.health, ENEMY_HEALTH);
+//   });
+// }
+
+
+enemy.js:
+
+     function createEnemies(numEnemies) {
+       for (let i = 0; i < numEnemies; i++) {
+           let x, y;
+           do {
+               x = Math.floor(Math.random() * maze[0].length) * TILE_SIZE + TILE_SIZE / 2;
+               y = Math.floor(Math.random() * maze.length) * TILE_SIZE + TILE_SIZE / 2;
+           } while (collidesWithWall(x - ENEMY_SIZE / 2, y - ENEMY_SIZE / 2, ENEMY_SIZE, ENEMY_SIZE));
+
+           enemies.push({
+               x: x,
+               y: y,
+               width: ENEMY_SIZE,
+               height: ENEMY_SIZE,
+               dx: (Math.random() - 0.5) * ENEMY_SPEED,
+               dy: (Math.random() - 0.5) * ENEMY_SPEED,
+               health: ENEMY_HEALTH,
+               directionChangeTimer: Math.random() * 1000, // Time until direction change
+               lastShotTime: Date.now() // Time of the last shot
+           });
+       }
+     }
+
+     function updateEnemies() {
+       // Move enemies with random movement
+       enemies.forEach(enemy => {
+           enemy.x += enemy.dx;
+           enemy.y += enemy.dy;
+
+           // Change direction periodically
+           enemy.directionChangeTimer -= 16.67; // Approximate time since last frame
+           if (enemy.directionChangeTimer <= 0) {
+               enemy.dx = (Math.random() - 0.5) * ENEMY_SPEED;
+               enemy.dy = (Math.random() - 0.5) * ENEMY_SPEED;
+               enemy.directionChangeTimer = Math.random() * 1000;
+           }
+
+           // Check enemy collisions with walls
+           if (collidesWithWall(enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height)) {
+               enemy.dx = -enemy.dx;
+               enemy.dy = -enemy.dy;
+           }
+
+           // Enemy shooting
+           const now = Date.now();
+           if (now - enemy.lastShotTime > ENEMY_SHOOT_INTERVAL) {
+               shootEnemyBullet(enemy);
+               enemy.lastShotTime = now;
+           }
+       });
+     }
+
+     function drawEnemies() {
+       ctx.fillStyle = 'red';
+       enemies.forEach(enemy => {
+           ctx.fillRect(enemy.x - enemy.width / 2, enemy.y - enemy.height / 2, enemy.width, enemy.height);
+
+           // Draw enemy health bar
+           drawHealthBar(enemy.x, enemy.y - enemy.height / 2 - 10, enemy.health, ENEMY_HEALTH);
+       });
+     }
